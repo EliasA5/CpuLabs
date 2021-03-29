@@ -38,7 +38,11 @@ begin
 	begin
 		if(rst ='1') then
 			currentBound <= zerovec;
+			state <= '1';
 		elsif(clk'EVENT and clk = '0') then
+
+			currentBound <= currentBound;
+			state <= '0';
 
 			if(state = '1') then
 				state <= '0';
@@ -53,9 +57,6 @@ begin
 	end process;
 	--------------------------------------
 	countOut <= tempOut;
-	
-	
-
 
 end arc_sys;
 
