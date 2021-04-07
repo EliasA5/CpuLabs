@@ -38,7 +38,9 @@ begin
         wait for 400 ns;
         rst <= '1', '0' after 300 ns;
         upperBound <= upperBound + 6;
-        wait for 10000 ns;
+        wait for 1000 ns;
+        upperBound <= upperBound - 9;
+        wait;
     end process;
 
 end architecture rtb;

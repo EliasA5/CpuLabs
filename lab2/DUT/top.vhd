@@ -23,7 +23,7 @@ begin
 			tempOut <= zerovec;
 		elsif(clk'EVENT and clk = '1') then
 
-			if(tempOut = currentBound) then
+			if(tempOut >= currentBound) then
 				tempOut <= zerovec;
 			elsif(tempOut >= upperBound) then
 				tempOut <= zerovec;
