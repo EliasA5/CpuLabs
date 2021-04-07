@@ -25,7 +25,7 @@ begin
 
 			if(tempOut = currentBound) then
 				tempOut <= zerovec;
-			elsif(tempOut = upperBound) then
+			elsif(tempOut >= upperBound) then
 				tempOut <= zerovec;
 			else
 				tempOut <= tempOut + '1';
@@ -51,6 +51,9 @@ begin
 				state <= '1';
 			elsif(tempOut = zerovec) then
 				currentBound <= currentBound + '1';
+			elsif(currentBound > upperBound) then
+				currentBound <= upperBound;
+
 			end if;
 
 		end if;
