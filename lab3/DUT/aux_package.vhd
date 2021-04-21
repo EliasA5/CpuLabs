@@ -39,9 +39,13 @@ package aux_package is
 	);
   end component;
 -----------------------------------------------------------------
-
-
-
+  component ALU is
+	generic (n : positive := 8 );
+	PORT (A, B: IN std_logic_vector (n-1 downto 0);
+            ALUFN : std_logic_vector(2 downto 0)
+			  ALUout: OUT std_logic_vector(n-1 downto 0));
+  end component;
+-----------------------------------------------------------------
 
   
   
