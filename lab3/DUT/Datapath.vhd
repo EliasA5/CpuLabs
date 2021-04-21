@@ -19,27 +19,26 @@ end Datapath;
 ------------- complete the Datapath Unit Architecture code --------------
 architecture arc_sys of Datapath is
 subtype vec is std_logic_vector(n-1 downto 0);
-signal down_counter: vec;
-signal op_reg: std_logic_vector(2 downto 0);
-signal b_reg: vec;
-signal c_reg: vec;
-signal A: vec;
-signal ALUout: vec;
-signal ALUFN: std_logic_vector(2 downto 0);
 constant zerovec: vec := (others => '0');
 constant onevec: vec := zerovec + '1';
+signal down_counter: vec := zerovec;
+signal op_reg: std_logic_vector(2 downto 0) := (others => '0');
+signal b_reg: vec := zerovec;
+signal c_reg: vec := zerovec;
+signal A: vec := zerovec;
+signal ALUout: vec := zerovec;
+signal ALUFN: std_logic_vector(2 downto 0) := (others => '0');
 begin
 	ALU0: ALU generic map(n) port map(A, b_reg, ALUFN, ALUout);
 
 	counter_load: process(clk)
 	begin
 		if(clk'EVENT and clk = '1') then
+			down_counter <= down_counter;
 			if(Ld = '1') then
 				down_counter <= DATAin;
 			elsif(down_counter /= zerovec) then
-					down_counter <= (down_counter - '1');
-			else
-				down_counter <= down_counter;
+					down_counter <= (down_counter - 1);
 			end if;
 		end if;
 	end process;
@@ -47,10 +46,9 @@ begin
 	opreg: process(clk)
 	begin
 		if(clk'EVENT and clk = '0') then
+			op_reg <= op_reg;
 			if(OPCin = '1') then
 				op_reg <= DATAin(2 downto 0);
-			else
-				op_reg <= op_reg;
 			end if;
 		end if;
 	end process;
@@ -58,10 +56,9 @@ begin
 	breg: process(clk)
 	begin
 		if(clk'EVENT and clk = '0') then
+			b_reg <= b_reg;
 			if(Bin = '1') then
 				b_reg <= ALUout;
-			else
-				b_reg <= b_reg;
 			end if;
 		end if;
 	end process;
@@ -69,10 +66,9 @@ begin
 	creg: process(clk)
 	begin
 		if(clk'EVENT and clk = '1') then
+			c_reg <= c_reg;
 			if(Cout = '1') then
 				c_reg <= b_reg;
-			else
-				c_reg <= c_reg;
 			end if;
 		end if;
 	end process;

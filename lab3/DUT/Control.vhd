@@ -13,7 +13,7 @@ end Control;
 ------------- complete the Control Unit Architecture code --------------
 architecture arc_sys of Control is
 type state is (state_0, state_1, state_2, state_3);
-signal pr_state, nx_state: state;
+signal pr_state, nx_state: state := state_0;
 begin
 
 	process (rst, clk)
