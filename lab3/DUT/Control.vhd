@@ -69,7 +69,8 @@ begin
 					OPC2 <= '1';
 					OPC1 <= '1';
 					Bin <= '1';
-					nx_state <= state_5;
+					Cout <= '1';
+					nx_state <= state_0;
 				when state_5 =>
 					Cout <= '1';
 					nx_state <= state_0;

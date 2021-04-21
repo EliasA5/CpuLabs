@@ -37,7 +37,7 @@ begin
 			if(Ld = '1') then
 				down_counter <= DATAin;
 			elsif(down_counter /= zerovec) then
-					down_counter <= (down_counter - 1);
+					down_counter <= (down_counter - '1');
 			else
 				down_counter <= down_counter;
 			end if;
@@ -68,7 +68,7 @@ begin
 
 	creg: process(clk)
 	begin
-		if(clk'EVENT and clk = '1') then
+		if(clk'EVENT and clk = '0') then
 			if(Cout = '1') then
 				c_reg <= b_reg;
 			else
