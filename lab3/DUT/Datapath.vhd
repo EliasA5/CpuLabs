@@ -18,7 +18,7 @@ entity Datapath is
 end Datapath;
 ------------- complete the Datapath Unit Architecture code --------------
 architecture arc_sys of Datapath is
-type vec is std_logic_vector(n-1 downto 0);
+subtype vec is std_logic_vector(n-1 downto 0);
 signal down_counter: vec;
 signal op_reg: std_logic_vector(2 downto 0);
 signal b_reg: vec;
@@ -27,7 +27,7 @@ signal A: vec;
 signal ALUout: vec;
 signal ALUFN: std_logic_vector(2 downto 0);
 constant zerovec: vec := (others => '0');
-constant onevec: vec := (0 => '1', others => '0');
+constant onevec: vec := zerovec + '1';
 begin
 	ALU0: ALU generic map(n) port map(A, b_reg, ALUFN, ALUout);
 
@@ -36,7 +36,7 @@ begin
 		if(clk'EVENT and clk = '1') then
 			if(Ld = '1') then
 				down_counter <= DATAin;
-			elsif(down_counter != zerovec) then
+			elsif(down_counter /= zerovec) then
 					down_counter <= (down_counter - 1);
 			else
 				down_counter <= down_counter;
@@ -48,7 +48,7 @@ begin
 	begin
 		if(clk'EVENT and clk = '1') then
 			if(OPCin = '1') then
-				op_reg <= DATAin(2 downto 0)
+				op_reg <= DATAin(2 downto 0);
 			else
 				op_reg <= op_reg;
 			end if;

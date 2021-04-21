@@ -18,10 +18,11 @@ begin
 
 	process (rst, clk)
 	begin
-		if(rst = '1')
+		if(rst = '1') then
 			pr_state <= state_0;
-		elsif(clk'EVENT and clk = '1')
+		elsif(clk'EVENT and clk = '1') then
 			pr_state <= nx_state;
+		end if;
 	end process;
 				
 	process(Input, One, pr_state)
@@ -72,6 +73,7 @@ begin
 				when state_5 =>
 					Cout <= '1';
 					nx_state <= state_0;
+			end case;
 	end process;
 	
 	
