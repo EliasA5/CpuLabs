@@ -46,7 +46,7 @@ begin
 	
 	opreg: process(clk)
 	begin
-		if(clk'EVENT and clk = '1') then
+		if(clk'EVENT and clk = '0') then
 			if(OPCin = '1') then
 				op_reg <= DATAin(2 downto 0);
 			else
@@ -57,7 +57,7 @@ begin
 
 	breg: process(clk)
 	begin
-		if(clk'EVENT and clk = '1') then
+		if(clk'EVENT and clk = '0') then
 			if(Bin = '1') then
 				b_reg <= ALUout;
 			else
@@ -68,7 +68,7 @@ begin
 
 	creg: process(clk)
 	begin
-		if(clk'EVENT and clk = '0') then
+		if(clk'EVENT and clk = '1') then
 			if(Cout = '1') then
 				c_reg <= b_reg;
 			else

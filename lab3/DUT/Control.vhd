@@ -12,7 +12,7 @@ entity Control is
 end Control;
 ------------- complete the Control Unit Architecture code --------------
 architecture arc_sys of Control is
-type state is (state_0, state_1, state_2, state_3, state_4, state_5);
+type state is (state_0, state_1, state_2, state_3);
 signal pr_state, nx_state: state;
 begin
 
@@ -54,7 +54,8 @@ begin
 					if(One = '0') then
 						nx_state <= state_3;
 					else
-						nx_state <= state_5;
+						Cout <= '1';
+						nx_state <= state_0;
 					end if;
 				when state_3 =>
 					OPC2 <= '1';
@@ -63,17 +64,9 @@ begin
 					if(One = '0') then
 						nx_state <= state_3;
 					else
-						nx_state <= state_4;
+						Cout <= '1';
+						nx_state <= state_0;
 					end if;
-				when state_4 =>
-					OPC2 <= '1';
-					OPC1 <= '1';
-					Bin <= '1';
-					Cout <= '1';
-					nx_state <= state_0;
-				when state_5 =>
-					Cout <= '1';
-					nx_state <= state_0;
 			end case;
 	end process;
 	
