@@ -16,7 +16,7 @@ type state is (state_0, state_1, state_2, state_3);
 signal pr_state, nx_state: state := state_0;
 begin
 
-	process (rst, clk)
+	update_state: process (rst, clk)
 	begin
 		if(rst = '1') then
 			pr_state <= state_0;
@@ -25,10 +25,10 @@ begin
 		end if;
 	end process;
 				
-	process(Input, One, pr_state)
+	update_nxtstate_outputs: process(Input, One, pr_state)
 		begin
 			-- default signal assignments
-			-- output is a function of present state only
+			-- output is a function of present state only (except for Cout)
 			-- next state is a function of present state and input
 			-- direct moore machine
 			OPCin <= '0';
@@ -37,6 +37,8 @@ begin
 			Ld <= '0';
 			Bin <= '0';
 			Cout <= '0';
+			-- update states based on inputs Input,One and present state
+			-- table of states in ../DOC/pre3.pdf
 			case pr_state is
 				when state_0 =>
 					OPCin <= '1';
