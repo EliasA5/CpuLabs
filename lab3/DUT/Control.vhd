@@ -12,7 +12,7 @@ entity Control is
 end Control;
 ------------- complete the Control Unit Architecture code --------------
 architecture arc_sys of Control is
-type state is (state_0, state_1, state_2, state_3);
+type state is (state_0, state_1, state_2, state_3, state_4);
 signal pr_state, nx_state: state := state_0;
 begin
 
@@ -28,7 +28,7 @@ begin
 	update_nxtstate_outputs: process(Input, One, pr_state)
 		begin
 			-- default signal assignments
-			-- output is a function of present state only (except for Cout)
+			-- output is a function of present state only
 			-- next state is a function of present state and input
 			-- direct moore machine
 			OPCin <= '0';
@@ -56,8 +56,7 @@ begin
 					if(One = '0') then
 						nx_state <= state_3;
 					else
-						Cout <= '1';
-						nx_state <= state_0;
+						nx_state <= state_4;
 					end if;
 				when state_3 =>
 					OPC2 <= '1';
@@ -66,8 +65,15 @@ begin
 					if(One = '0') then
 						nx_state <= state_3;
 					else
-						Cout <= '1';
+						nx_state <= state_4;
+					end if;
+				when state_4 =>
+					Cout <= '1';
+					OPCin <= '1';
+					if (Input = '0') then
 						nx_state <= state_0;
+					else
+						nx_state <= state_1;
 					end if;
 			end case;
 	end process;
