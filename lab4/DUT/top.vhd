@@ -25,7 +25,7 @@ begin
     upperBound <= upperB;
     enable <= SW(8);
     rst <= SW(9);
-    upperbound_reg: process(SW, key0)
+    upperbound_reg: process(SW, key0, clk)
     begin
         if(key0 = '1') then
             if(clk'event and clk = '1') then
@@ -34,7 +34,7 @@ begin
         end if;
     end process upperbound_reg;
 
-    clkDiv_reg: process(SW, key1)
+    clkDiv_reg: process(SW, key1, clk)
     begin
         if(key1 = '1') then
             if(clk'event and clk = '1') then
