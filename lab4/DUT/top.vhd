@@ -6,12 +6,13 @@ entity top is
 	generic ( n : positive := 8 ); 
 	port( clk : in std_logic;
 		  SW : in std_logic_vector(9 downto 0);
-          key0,key1: in std_logic);
+          key0,key1: in std_logic;
+          upperBound: std_logic_vector(n-1 downto 0) := (others => '0');
+          countOut: std_logic_vector(n-1 downto 0) := (others => '0')
+          );
 end top;
 
 architecture rtl of top is
-    signal upperBound: std_logic_vector(n-1 downto 0) := (others => '0');
-    signal countOut: std_logic_vector(n-1 downto 0) := (others => '0');
     signal div: std_logic_vector(1 downto 0) := (others => '0');
     signal rst: std_logic := '1';
     signal enable: std_logic := '0';
@@ -22,9 +23,7 @@ begin
 
     upperbound_reg: process(SW, key0)
     begin
-        if(key0 = '0') then
-            upperBound <= (others => '0');
-        else
+        if(rising_edge(key0)) then
             upperBound <= SW(7 downto 0);
         end if;
     end process upperbound_reg;
