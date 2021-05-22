@@ -23,16 +23,14 @@ begin
 
     upperbound_reg: process(SW, key0)
     begin
-        if(rising_edge(key0)) then
+        if(key0 = '1') then
             upperBound <= SW(7 downto 0);
         end if;
     end process upperbound_reg;
 
     clkDiv_reg: process(SW, key0)
     begin
-        if(key1 = '0') then
-            div <= (others => '0');
-        else
+        if(key1 = '1') then
             div <= SW(1 downto 0);
         end if;
     end process clkDiv_reg;
