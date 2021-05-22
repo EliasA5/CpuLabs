@@ -7,8 +7,8 @@ entity top is
 	port( clk : in std_logic;
 		  SW : in std_logic_vector(9 downto 0);
           key0,key1: in std_logic;
-          upperBound: std_logic_vector(n-1 downto 0) := (others => '0');
-          countOut: std_logic_vector(n-1 downto 0) := (others => '0')
+          upperBound: out std_logic_vector(n-1 downto 0) := (others => '0');
+          countOut: out std_logic_vector(n-1 downto 0) := (others => '0')
           );
 end top;
 
@@ -17,21 +17,29 @@ architecture rtl of top is
     signal rst: std_logic := '1';
     signal enable: std_logic := '0';
     signal pllclk, divclk: std_logic;
+    signal upperB: std_logic_vector(n-1 downto 0) := (others => '0');
 
 begin
-    m0: modc generic map(n) port map(rst, enable, divclk, upperBound, countOut);
+    m0: modc generic map(n) port map(rst, enable, divclk, upperB, countOut);
 
+    upperBound <= upperB;
+    enable <= SW(8);
+    rst <= SW(9);
     upperbound_reg: process(SW, key0)
     begin
         if(key0 = '1') then
-            upperBound <= SW(7 downto 0);
+            if(clk'event and clk = '1') then
+                upperB <= SW(7 downto 0);
+            end if;
         end if;
     end process upperbound_reg;
 
-    clkDiv_reg: process(SW, key0)
+    clkDiv_reg: process(SW, key1)
     begin
         if(key1 = '1') then
-            div <= SW(1 downto 0);
+            if(clk'event and clk = '1') then
+                div <= SW(1 downto 0);
+            end if;
         end if;
     end process clkDiv_reg;
     
