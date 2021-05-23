@@ -4,17 +4,16 @@ use ieee.std_logic_unsigned.all;
 USE work.aux_package.all;
 ------------------------------------------------------------------
 entity modc is
-	generic ( n : positive := 8 ); 
 	port( rst,enable,clk : in std_logic;
-		  upperBound : in std_logic_vector(n-1 downto 0);
-		  countOut : out std_logic_vector(n-1 downto 0));
+		  upperBound : in std_logic_vector(7 downto 0);
+		  countOut : out std_logic_vector(7 downto 0));
 end modc;
 ------------------------------------------------------------------
 architecture arc_sys of modc is
-	signal currentBound: std_logic_vector(n-1 downto 0) := (others => '0');
-	signal tempOut: std_logic_vector(n-1 downto 0) := (others => '0');
+	signal currentBound: std_logic_vector(7 downto 0) := (others => '0');
+	signal tempOut: std_logic_vector(7 downto 0) := (others => '0');
 	signal state: std_logic := '1';
-	constant zerovec: std_logic_vector(n-1 downto 0) := (others => '0');	
+	constant zerovec: std_logic_vector(7 downto 0) := (others => '0');	
 begin
 	--------------------------------------------------------------
 	proc1 : process(clk, rst, enable)

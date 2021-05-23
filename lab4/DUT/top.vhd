@@ -3,12 +3,11 @@ USE ieee.std_logic_1164.all;
 USE work.aux_package.all;
 
 entity top is
-	generic ( n : positive := 8 ); 
 	port( clk : in std_logic;
 		  SW : in std_logic_vector(9 downto 0);
           key0,key1: in std_logic;
-          upperBound: out std_logic_vector(n-1 downto 0) := (others => '0');
-          countOut: out std_logic_vector(n-1 downto 0) := (others => '0');
+          upperBound: out std_logic_vector(7 downto 0) := (others => '0');
+          countOut: out std_logic_vector(7 downto 0) := (others => '0');
           hexOutUpperB: out std_logic_vector(13 downto 0) := (others => '0');
           hexOutCountOut: out std_logic_vector(13 downto 0) := (others => '0')
           );
@@ -19,11 +18,11 @@ architecture rtl of top is
     signal rst: std_logic := '1';
     signal enable: std_logic := '0';
     signal pllclk, divclk: std_logic;
-    signal upperB: std_logic_vector(n-1 downto 0) := (others => '0');
-    signal cOut: std_logic_vector(n-1 downto 0) := (others => '0'); 
+    signal upperB: std_logic_vector(7 downto 0) := (others => '0');
+    signal cOut: std_logic_vector(7 downto 0) := (others => '0'); 
 
 begin
-    m0: modc generic map(n) port map(rst, enable, divclk, upperB, cOut);
+    m0: modc port map(rst, enable, divclk, upperB, cOut);
     pll0: pll port map(inclk0 => clk, c0 => pllclk);
     div0: div port map(pllclk, divclk, divby);
     ToHex0: bin8ToHex port map(upperB, hexOutUpperB);
