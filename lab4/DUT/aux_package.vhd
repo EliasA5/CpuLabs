@@ -23,6 +23,14 @@ package aux_package is
 
 ----------------------------------------------------------------
 
+	component div is
+		port( clkin : in std_logic;
+			clkout: out std_logic;
+			divby : in std_logic_vector(1 downto 0)
+			);
+	end component;
+----------------------------------------------------------------
+
 
   
   
