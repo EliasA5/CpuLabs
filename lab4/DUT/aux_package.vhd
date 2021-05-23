@@ -15,9 +15,14 @@ package aux_package is
 
 	component top is
 		generic ( n : positive := 8 ); 
-		port( clk : in std_logic;
-		  SW : in std_logic_vector(9 downto 0);
-          key0,key1: in std_logic);
+		port(   clk : in std_logic;
+				SW : in std_logic_vector(9 downto 0);
+				key0,key1: in std_logic;
+				upperBound: out std_logic_vector(n-1 downto 0) := (others => '0');
+				countOut: out std_logic_vector(n-1 downto 0) := (others => '0');
+				hexOutUpperB: out std_logic_vector(13 downto 0) := (others => '0');
+				hexOutCountOut: out std_logic_vector(13 downto 0) := (others => '0')
+          );
 
 	end component;
 
@@ -31,6 +36,23 @@ package aux_package is
 	end component;
 ----------------------------------------------------------------
 
+	component PLL is
+		port( areset: in std_logic  := '0';
+			  inclk0: in std_logic  := '0';
+			  c0: out std_logic ;
+			  locked: out std_logic 
+			);
+	end component;
+
+----------------------------------------------------------------
+
+	component bin8ToHex is
+		port( binin : in std_logic_vector(7 downto 0);
+          	  hexout: out std_logic_vector(13 downto 0)
+		  );
+	end component;
+
+----------------------------------------------------------------
 
   
   

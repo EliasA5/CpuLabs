@@ -1,6 +1,6 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
-USE ieee.std_logic_unsigned.all;
+use ieee.std_logic_unsigned.all;
 USE work.aux_package.all;
 ------------------------------------------------------------------
 entity modc is
@@ -19,10 +19,11 @@ begin
 	--------------------------------------------------------------
 	proc1 : process(clk, rst, enable)
 	begin
-		if(enable = '1') then
-			if(rst = '1') then
-				tempOut <= zerovec;
-			elsif(clk'EVENT and clk = '1') then
+		
+		if(rst = '1') then
+			tempOut <= zerovec;
+		elsif(clk'EVENT and clk = '1') then
+			if(enable = '1') then
 
 				if(tempOut >= currentBound) then
 					tempOut <= zerovec;
@@ -33,15 +34,17 @@ begin
 				end if;
 			end if;
 		end if;
+		
 	end process;
 	--------------------------------------------------------------
 	proc2 : process(clk, rst, enable)
 	begin
-		if(enable = '1') then
-			if(rst ='1') then
-				currentBound <= zerovec;
-				state <= '1';
-			elsif(clk'EVENT and clk = '0') then
+		
+		if(rst ='1') then
+			currentBound <= zerovec;
+			state <= '1';
+		elsif(clk'EVENT and clk = '0') then
+			if(enable = '1') then
 
 				currentBound <= currentBound;
 				state <= '0';
@@ -59,6 +62,7 @@ begin
 				end if;
 			end if;
 		end if;
+
 	end process;
 	--------------------------------------
 	countOut <= tempOut;
