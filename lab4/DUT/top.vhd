@@ -34,19 +34,15 @@ begin
     countOut <= cOut;
     upperbound_reg: process(SW, key0, clk)
     begin
-        if(key0 = '0') then
-            if(clk'event and clk = '1') then
-                upperB <= SW(7 downto 0);
-            end if;
+        if(key0'event and key0 = '0') then
+            upperB <= SW(7 downto 0);
         end if;
     end process upperbound_reg;
 
     clkDiv_reg: process(SW, key1, clk)
     begin
-        if(key1 = '0') then
-            if(clk'event and clk = '1') then
-                divby <= SW(1 downto 0);
-            end if;
+        if(key1'event and key1 = '0') then
+            divby <= SW(1 downto 0);
         end if;
     end process clkDiv_reg;
     
