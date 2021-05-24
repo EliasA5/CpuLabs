@@ -12,7 +12,8 @@ end bin8ToHex;
 architecture rtl of bin8ToHex is
     
 begin
-    
+    --selector for binary to 7-segment display bits
+    --4 bits is 0,...,F numbers in hex format, change output bits according to Figure 1
     with binin(3 downto 0) select 
         hexout(6 downto 0) <= "1000000" when x"0",	
                     "1111001" when x"1",	
@@ -26,7 +27,7 @@ begin
                     "0011000" when x"9", 	--  4	  2
                     "0001000" when x"a",    --  |	  |
                     "0000011" when x"b",    --  ---3---
-                    "1000110" when x"c",    --
+                    "1000110" when x"c",    --  Figure 1
                     "0100001" when x"d",
                     "0000110" when x"e",
                     "0001110" when x"f",

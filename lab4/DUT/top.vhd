@@ -22,6 +22,7 @@ architecture rtl of top is
     signal cOut: std_logic_vector(7 downto 0) := (others => '0'); 
 
 begin
+    --connect all relevant inner signal and ports to thier correct location according to figure 3 in assignment4
     m0: modc port map(rst, enable, divclk, upperB, cOut);
     pll0: pll port map(inclk0 => clk, c0 => pllclk);
     div0: div port map(pllclk, divclk, divby);
@@ -32,6 +33,8 @@ begin
     enable <= SW(8);
     rst <= SW(9);
     countOut <= cOut;
+
+    --the register that holds value for upperBound, treat key0 as a falling edge trigger
     upperbound_reg: process(SW, key0, clk)
     begin
         if(key0'event and key0 = '0') then
@@ -39,6 +42,7 @@ begin
         end if;
     end process upperbound_reg;
 
+    --the register that holds value for clock div, treat key1 as a falling edge trigger
     clkDiv_reg: process(SW, key1, clk)
     begin
         if(key1'event and key1 = '0') then

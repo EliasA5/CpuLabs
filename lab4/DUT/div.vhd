@@ -13,7 +13,7 @@ end div;
 architecture rtl of div is
     signal counter: std_logic_vector(31 downto 0) := (others => '0');
 begin
-    
+    --basic counter and select which bit to take based on divby input
     counter_proc: process(clkin)
     begin
         if(clkin'event and clkin = '1') then
