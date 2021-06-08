@@ -11,7 +11,8 @@ ENTITY Ifetch IS
 	PORT(	SIGNAL Instruction 		: OUT	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
         	SIGNAL PC_plus_4_out 	: OUT	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
         	SIGNAL Add_result 		: IN 	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
-        	SIGNAL Branch 			: IN 	STD_LOGIC;
+        	SIGNAL Branch 			: IN 	STD_LOGIC_VECTOR( 1 DOWNTO 0 );
+			SIGNAL Jump				: IN	STD_LOGIC;
         	SIGNAL Zero 			: IN 	STD_LOGIC;
       		SIGNAL PC_out 			: OUT	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
         	SIGNAL clock, reset 	: IN 	STD_LOGIC);
@@ -49,7 +50,8 @@ inst_memory: altsyncram
        	PC_plus_4( 1 DOWNTO 0 )  <= "00";
 						-- Mux to select Branch Address or PC + 4        
 		Next_PC  <= X"00" WHEN Reset = '1' ELSE
-			Add_result  WHEN ( ( Branch = '1' ) AND ( Zero = '1' ) ) 
+			Add_result  WHEN ( ( Branch = "01" ) AND ( Zero = '1' ) ) ELSE
+			Add_result WHEN ( ( Branch = "10" ) AND ( Zero = '0' ) ) 
 			ELSE   PC_plus_4( 9 DOWNTO 2 );
 	PROCESS
 		BEGIN

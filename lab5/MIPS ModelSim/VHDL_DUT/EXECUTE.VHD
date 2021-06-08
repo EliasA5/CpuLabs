@@ -23,7 +23,7 @@ ARCHITECTURE behavior OF Execute IS
 SIGNAL Ainput, Binput 		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 SIGNAL ALU_output_mux		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 SIGNAL Branch_Add 			: STD_LOGIC_VECTOR( 7 DOWNTO 0 );
-SIGNAL ALU_ctl				: STD_LOGIC_VECTOR( 2 DOWNTO 0 );
+SIGNAL ALU_ctl				: STD_LOGIC_VECTOR( 3 DOWNTO 0 );
 BEGIN
 	Ainput <= Read_data_1;
 						-- ALU input mux
@@ -31,9 +31,10 @@ BEGIN
 		WHEN ( ALUSrc = '0' ) 
   		ELSE  Sign_extend( 31 DOWNTO 0 );
 						-- Generate ALU control bits
-	ALU_ctl( 0 ) <= ( Function_opcode( 0 ) OR Function_opcode( 3 ) ) AND ALUOp(1 );
-	ALU_ctl( 1 ) <= ( NOT Function_opcode( 2 ) ) OR (NOT ALUOp( 1 ) );
-	ALU_ctl( 2 ) <= ( Function_opcode( 1 ) AND ALUOp( 1 )) OR ALUOp( 0 );
+	--ALU_ctl( 0 ) <= ( Function_opcode( 0 ) OR Function_opcode( 3 ) ) AND ALUOp(1 );
+	--ALU_ctl( 1 ) <= ( NOT Function_opcode( 2 ) ) OR (NOT ALUOp( 1 ) );
+	--ALU_ctl( 2 ) <= ( Function_opcode( 1 ) AND ALUOp( 1 )) OR ALUOp( 0 );
+	ALU_ctl(3 DOWNTO 0) <= 
 						-- Generate Zero Flag
 	Zero <= '1' 
 		WHEN ( ALU_output_mux( 31 DOWNTO 0 ) = X"00000000"  )
@@ -45,7 +46,7 @@ BEGIN
 						-- Adder to compute Branch Address
 	Branch_Add	<= PC_plus_4( 9 DOWNTO 2 ) +  Sign_extend( 7 DOWNTO 0 ) ;
 		Add_result 	<= Branch_Add( 7 DOWNTO 0 );
-
+	
 PROCESS ( ALU_ctl, Ainput, Binput )
 	BEGIN
 					-- Select ALU operation
