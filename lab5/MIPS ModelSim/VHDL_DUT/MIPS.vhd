@@ -36,6 +36,7 @@ ARCHITECTURE structure OF MIPS IS
         		RegWrite, MemtoReg 	: IN 	STD_LOGIC;
         		RegDst 				: IN 	STD_LOGIC_VECTOR ( 1 DOWNTO 0);
         		Sign_extend 		: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+				Addr				: OUT 	STD_LOGIC_VECTOR( 25 DOWNTO 0 );
         		clock, reset		: IN 	STD_LOGIC );
 	END COMPONENT;
 
@@ -50,7 +51,7 @@ ARCHITECTURE structure OF MIPS IS
              	MemWrite 			: OUT 	STD_LOGIC;
              	Branch 				: OUT 	STD_LOGIC_VETOR( 1 DOWNTO 0);
 				Jump				: OUT	STD_LOGIC;
-             	ALUop 				: OUT 	STD_LOGIC_VECTOR( 1 DOWNTO 0 );
+             	ALUop 				: OUT 	STD_LOGIC_VECTOR( 3 DOWNTO 0 );
              	clock, reset		: IN 	STD_LOGIC );
 	END COMPONENT;
 
@@ -58,8 +59,9 @@ ARCHITECTURE structure OF MIPS IS
    	     PORT(	Read_data_1 		: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
                 Read_data_2 		: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
                	Sign_Extend 		: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-               	Function_opcode		: IN 	STD_LOGIC_VECTOR( 5 DOWNTO 0 );
-               	ALUOp 				: IN 	STD_LOGIC_VECTOR( 1 DOWNTO 0 );
+				Addr				: IN 	STD_LOGIC_VECTOR( 25 DOWNTO 0 );
+				Shamt				: IN 	STD_LOGIC_VECTOR( 4 DOWNTO 0);
+               	ALUOp 				: IN 	STD_LOGIC_VECTOR( 3 DOWNTO 0 );
                	ALUSrc 				: IN 	STD_LOGIC;
                	Zero 				: OUT	STD_LOGIC;
                	ALU_Result 			: OUT	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
@@ -82,6 +84,7 @@ ARCHITECTURE structure OF MIPS IS
 	SIGNAL read_data_1 		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 	SIGNAL read_data_2 		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 	SIGNAL Sign_Extend 		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+	SIGNAL Addr				: STD_LOGIC_VECTOR( 25 DOWNTO 0 );
 	SIGNAL Add_result 		: STD_LOGIC_VECTOR( 7 DOWNTO 0 );
 	SIGNAL ALU_result 		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 	SIGNAL read_data 		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
@@ -94,7 +97,7 @@ ARCHITECTURE structure OF MIPS IS
 	SIGNAL MemWrite 		: STD_LOGIC;
 	SIGNAL MemtoReg 		: STD_LOGIC;
 	SIGNAL MemRead 			: STD_LOGIC;
-	SIGNAL ALUop 			: STD_LOGIC_VECTOR(  1 DOWNTO 0 );
+	SIGNAL ALUop 			: STD_LOGIC_VECTOR(  3 DOWNTO 0 );
 	SIGNAL Instruction		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 
 BEGIN
@@ -131,6 +134,7 @@ BEGIN
 				MemtoReg 		=> MemtoReg,
 				RegDst 			=> RegDst,
 				Sign_extend 	=> Sign_extend,
+				Addr			=> Addr,
         		clock 			=> clock,  
 				reset 			=> reset );
 
@@ -154,7 +158,8 @@ BEGIN
    	PORT MAP (	Read_data_1 	=> read_data_1,
              	Read_data_2 	=> read_data_2,
 				Sign_extend 	=> Sign_extend,
-                Function_opcode	=> Instruction( 5 DOWNTO 0 ),
+				Addr			=> Addr,
+				Shamt			=> Instruction( 10 DOWNTO 6 ),
 				ALUOp 			=> ALUop,
 				ALUSrc 			=> ALUSrc,
 				Zero 			=> Zero,

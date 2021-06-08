@@ -14,6 +14,7 @@ ENTITY Idecode IS
 			MemtoReg 	: IN 	STD_LOGIC;
 			RegDst 		: IN 	STD_LOGIC_VECTOR( 1 DOWNTO 0 );
 			Sign_extend : OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+			Addr		: OUT 	STD_LOGIC_VECTOR( 25 DOWNTO 0 );
 			clock,reset	: IN 	STD_LOGIC );
 END Idecode;
 
@@ -37,6 +38,7 @@ BEGIN
    	write_register_address_1	<= Instruction( 15 DOWNTO 11 );
    	write_register_address_0 	<= Instruction( 20 DOWNTO 16 );
    	Instruction_immediate_value <= Instruction( 15 DOWNTO 0 );
+	Addr 						<= Instruction( 25 DOWNTO 0 );
 					-- Read Register 1 Operation
 	read_data_1 <= register_array( 
 			      CONV_INTEGER( read_register_1_address ) );
