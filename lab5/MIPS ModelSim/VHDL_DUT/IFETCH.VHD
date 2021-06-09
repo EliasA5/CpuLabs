@@ -11,6 +11,7 @@ ENTITY Ifetch IS
 	PORT(	SIGNAL Instruction 		: OUT	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
         	SIGNAL PC_plus_4_out 	: OUT	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
         	SIGNAL Add_result 		: IN 	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+			SIGNAL Jump_Result		: IN	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
         	SIGNAL Branch 			: IN 	STD_LOGIC_VECTOR( 1 DOWNTO 0 );
 			SIGNAL Jump				: IN	STD_LOGIC;
         	SIGNAL Zero 			: IN 	STD_LOGIC;

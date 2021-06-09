@@ -20,6 +20,7 @@ ARCHITECTURE structure OF MIPS IS
    	     PORT(	Instruction			: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
         		PC_plus_4_out 		: OUT  	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
         		Add_result 			: IN 	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+				Jump_Result			: IN	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
         		Branch 				: IN 	STD_LOGIC_VECTOR( 1 DOWNTO 0);
 				Jump				: IN 	STD_LOGIC;
         		Zero 				: IN 	STD_LOGIC;
@@ -49,7 +50,7 @@ ARCHITECTURE structure OF MIPS IS
              	RegWrite 			: OUT 	STD_LOGIC;
              	MemRead 			: OUT 	STD_LOGIC;
              	MemWrite 			: OUT 	STD_LOGIC;
-             	Branch 				: OUT 	STD_LOGIC_VETOR( 1 DOWNTO 0);
+             	Branch 				: OUT 	STD_LOGIC_VECTOR( 1 DOWNTO 0);
 				Jump				: OUT	STD_LOGIC;
              	ALUop 				: OUT 	STD_LOGIC_VECTOR( 3 DOWNTO 0 );
              	clock, reset		: IN 	STD_LOGIC );
@@ -66,6 +67,7 @@ ARCHITECTURE structure OF MIPS IS
                	Zero 				: OUT	STD_LOGIC;
                	ALU_Result 			: OUT	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
                	Add_Result 			: OUT	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+				Jump_Result			: OUT	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
                	PC_plus_4 			: IN 	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
                	clock, reset		: IN 	STD_LOGIC );
 	END COMPONENT;
@@ -86,6 +88,7 @@ ARCHITECTURE structure OF MIPS IS
 	SIGNAL Sign_Extend 		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 	SIGNAL Addr				: STD_LOGIC_VECTOR( 25 DOWNTO 0 );
 	SIGNAL Add_result 		: STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+	SIGNAL Jump_Result		: STD_LOGIC_VECTOR( 7 DOWNTO 0 );
 	SIGNAL ALU_result 		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 	SIGNAL read_data 		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 	SIGNAL ALUSrc 			: STD_LOGIC;
@@ -117,6 +120,7 @@ BEGIN
 	PORT MAP (	Instruction 	=> Instruction,
     	    	PC_plus_4_out 	=> PC_plus_4,
 				Add_result 		=> Add_result,
+				Jump_Result		=> Jump_Result,
 				Branch 			=> Branch,
 				Jump			=> Jump,
 				Zero 			=> Zero,
@@ -165,6 +169,7 @@ BEGIN
 				Zero 			=> Zero,
                 ALU_Result		=> ALU_Result,
 				Add_Result 		=> Add_Result,
+				Jump_Result		=> Jump_Result,
 				PC_plus_4		=> PC_plus_4,
                 Clock			=> clock,
 				Reset			=> reset );

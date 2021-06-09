@@ -35,9 +35,9 @@ BEGIN
 	Bne			<=  '1'  WHEN  Opcode = "000101"  ELSE '0';
 	J			<= 	'1'	 WHEN  Opcode = "000010"  Else '0';
 	Jal			<=	'1'	 WHEN  Opcode = "000011"  ELSE '0';
-	Imm_write	<=	'0'  WHEN  Lw OR Beq OR Bne OR J ELSE '1'; 
+	Imm_write	<=	'0'  WHEN  (Lw = '1' OR Beq = '1' OR Bne = '1' OR J = '1') ELSE '1'; 
 	
-	Jump		<=	'1'  WHEN  J or Jal  or (R_format and Function_opcode = "001000") else '0';
+	Jump		<=	'1'  WHEN  (J = '1' or Jal = '1' or (R_format = '1' and Function_opcode = "001000")) else '0';
 	RegDst(1)	<=	Jal;
   	RegDst(0)   <=  R_format;
  	ALUSrc  	<=  not(R_format or Beq or Bne);
@@ -60,7 +60,7 @@ BEGIN
 					"1111" WHEN Function_opcode = X"2A" ELSE -- slt
 					"ZZZZ";
 					
-	ALUop		<= 	ALUop_temp WHEN R_format ELSE
+	ALUop		<= 	ALUop_temp WHEN R_format = '1' ELSE
 					"0000" WHEN Opcode = X"0C" ELSE -- and
 					"0001" WHEN Opcode = X"0D" ELSE -- or
 					"0010" WHEN Opcode = X"0E" ELSE -- xor
