@@ -58,7 +58,7 @@ BEGIN
 						-- Adder to compute Branch Address
 	Branch_Add	<= PC_plus_4( 9 DOWNTO 2 ) +  Sign_extend( 7 DOWNTO 0 ) ;
 	Add_result 	<= Branch_Add( 7 DOWNTO 0 );
-	Jump_Result <= ALU_output_mux(9 downto 2) when ALU_output_mux = "1000" ELSE
+	Jump_Result <= ALU_output_mux(9 downto 2) when ALUOp = "1000" ELSE
 				   Addr( 7 DOWNTO 0 );
 	mult_result <= Ainput * Binput;  
 
