@@ -4,6 +4,7 @@ LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.STD_LOGIC_ARITH.ALL;
 USE IEEE.STD_LOGIC_SIGNED.ALL;
+use ieee.numeric_std.all;
 
 ENTITY  Execute IS
 	PORT(	Read_data_1 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
@@ -36,13 +37,12 @@ end COMPONENT;
 SIGNAL Ainput, Binput 		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 SIGNAL ALU_output_mux		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 SIGNAL Branch_Add 			: STD_LOGIC_VECTOR( 7 DOWNTO 0 );
-SIGNAL ShiftLeft_Result		: STD_LOGIC_VECTOR(31 DOWNTO 0);
-SIGNAL ShiftRight_Result	: STD_LOGIC_VECTOR(31 DOWNTO 0);
+SIGNAL Shift_Result			: STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL mult_result			: STD_LOGIC_VECTOR(63 DOWNTO 0);
 BEGIN
 						-- Calculate shifts
-	shifterLeft: Shifter GENERIC MAP(32, 5) PORT MAP(Y => Ainput, X => Shamt, right => '0', res => ShiftLeft_Result);
-	shifterRight: Shifter GENERIC MAP(32, 5) PORT MAP(Y => Ainput, X => Shamt, right => '1', res => ShiftRight_Result);
+	shifterRes:  Shifter GENERIC MAP(32, 5) PORT MAP(Y => Binput, X => Shamt, right => ALUOp(0), res => Shift_Result);
+	
 
 	Ainput <= Read_data_1;
 						-- ALU input mux
@@ -62,7 +62,7 @@ BEGIN
 				   Addr( 7 DOWNTO 0 );
 	mult_result <= Ainput * Binput;  
 
-	PROCESS ( ALUOp, Ainput, Binput )
+	PROCESS ( ALUOp, Ainput, Binput, Shift_Result )
 		BEGIN
 						-- Select ALU operation
 		CASE ALUOp IS
@@ -79,9 +79,9 @@ BEGIN
 							-- ALU performs MULTIPLY
 			WHEN "0101" 	=>	ALU_output_mux 	<= mult_result( 31 DOWNTO 0 );
 							-- ALU performs SHIFT LEFT BY SHAMT
-			WHEN "0110" 	=>	ALU_output_mux 	<= ShiftLeft_Result;
+			WHEN "0110" 	=>	ALU_output_mux 	<= Shift_Result;
 							-- ALU performs SHIFT RIGHT BY SHAMT
-			WHEN "0111" 	=>	ALU_output_mux 	<= ShiftRight_Result;
+			WHEN "0111" 	=>	ALU_output_mux 	<= Shift_Result;
 							-- ALU performs Pass A
 			WHEN "1000" 	=>	ALU_output_mux 	<= Ainput;
 							-- ALU performs SHIFT LEFT 16 TIMES
