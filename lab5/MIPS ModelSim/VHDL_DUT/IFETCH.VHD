@@ -50,11 +50,11 @@ inst_memory: altsyncram
       	PC_plus_4( 9 DOWNTO 2 )  <= PC( 9 DOWNTO 2 ) + 1;
        	PC_plus_4( 1 DOWNTO 0 )  <= "00";
 						-- Mux to select Branch Address or PC + 4        
-		Next_PC  <= X"00" WHEN Reset = '1' ELSE
-			Add_result  WHEN ( ( Branch = "01" ) AND ( Zero = '1' ) ) ELSE
-			Add_result WHEN ( ( Branch = "10" ) AND ( Zero = '0' ) ) ELSE
-			Jump_Result WHEN (Jump = '1')
-			ELSE   PC_plus_4( 9 DOWNTO 2 );
+		Next_PC  <= X"00" WHEN reset = '1' ELSE
+					Add_result  WHEN ( ( Branch = "01" ) AND ( Zero = '1' ) ) ELSE
+					Add_result WHEN ( ( Branch = "10" ) AND ( Zero = '0' ) ) ELSE
+					Jump_Result WHEN (Jump = '1') ELSE
+					PC_plus_4( 9 DOWNTO 2 );
 	PROCESS
 		BEGIN
 			WAIT UNTIL ( clock'EVENT ) AND ( clock = '1' );

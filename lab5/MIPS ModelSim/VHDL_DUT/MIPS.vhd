@@ -18,7 +18,8 @@ ENTITY MIPS IS
 		CS4_OUT_SIG         			: OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
 		CS5_OUT_SIG         			: OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
 		CS6_OUT_SIG         			: OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
-		CS7_IN_SIG          			: IN     STD_LOGIC_VECTOR( 7 DOWNTO 0 ));
+		CS7_IN_SIG          			: IN     STD_LOGIC_VECTOR( 7 DOWNTO 0 )
+		);
 END 	MIPS;
 
 ARCHITECTURE structure OF MIPS IS

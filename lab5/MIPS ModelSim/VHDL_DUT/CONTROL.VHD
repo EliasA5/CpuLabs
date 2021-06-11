@@ -24,7 +24,9 @@ END control;
 ARCHITECTURE behavior OF control IS
 
 	SIGNAL  R_format, Lw, Sw, Beq, Bne, Imm_write, Jal, J 	: STD_LOGIC;
-	SIGNAL	ALUop_temp : STD_LOGIC_VECTOR(3 DOWNTO 0);
+	SIGNAL	ALUop_temp 			: STD_LOGIC_VECTOR( 3 DOWNTO 0 );
+	SIGNAL	Ext_Function_opcode : STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+	SIGNAL	Ext_Opcode 			: STD_LOGIC_VECTOR( 7 DOWNTO 0 );
 
 BEGIN           
 				-- Code to generate control signals using opcode bits
@@ -35,7 +37,7 @@ BEGIN
 	Bne			<=  '1'  WHEN  Opcode = "000101"  ELSE '0';
 	J			<= 	'1'	 WHEN  Opcode = "000010"  Else '0';
 	Jal			<=	'1'	 WHEN  Opcode = "000011"  ELSE '0';
-	Imm_write	<=	'0'  WHEN  (Lw = '1' OR Beq = '1' OR Bne = '1' OR J = '1') ELSE '1'; 
+	Imm_write	<=	'0'  WHEN  (Sw = '1' OR Beq = '1' OR Bne = '1' OR J = '1') ELSE '1'; 
 	
 	Jump		<=	'1'  WHEN  (J = '1' or Jal = '1' or (R_format = '1' and Function_opcode = "001000")) else '0';
 	RegDst(1)	<=	Jal;
@@ -48,26 +50,28 @@ BEGIN
 	Branch(1)	<=	Bne; 
  	Branch(0)   <=  Beq;
 						-- decode alu operation
-	ALUop_temp	<=	"0000" WHEN Function_opcode = X"24" ELSE -- and
-					"0001" WHEN Function_opcode = X"25" ELSE -- or
-					"0010" WHEN Function_opcode = X"26" ELSE -- xor
-					"0011" WHEN Function_opcode = X"20" ELSE -- add
-					"0100" WHEN Function_opcode = X"22" ELSE -- sub
-					"0101" WHEN Function_opcode = X"18" ELSE -- multiply
-					"0110" WHEN Function_opcode = X"00" ELSE -- shift left
-					"0111" WHEN Function_opcode = X"02" ELSE -- shift right
-					"1000" WHEN Function_opcode = X"08" ELSE -- pass A JR
-					"1111" WHEN Function_opcode = X"2A" ELSE -- slt
+	Ext_Function_opcode <= "00" & Function_opcode;
+	Ext_Opcode <= "00" & Opcode;
+	ALUop_temp	<=	"0000" WHEN (Ext_Function_opcode = X"24") ELSE -- and
+					"0001" WHEN (Ext_Function_opcode = X"25") ELSE -- or
+					"0010" WHEN (Ext_Function_opcode = X"26") ELSE -- xor
+					"0011" WHEN (Ext_Function_opcode = X"20") ELSE -- add
+					"0100" WHEN (Ext_Function_opcode = X"22") ELSE -- sub
+					"0101" WHEN (Ext_Function_opcode = X"18") ELSE -- multiply
+					"0110" WHEN (Ext_Function_opcode = X"00") ELSE -- shift left
+					"0111" WHEN (Ext_Function_opcode = X"02") ELSE -- shift right
+					"1000" WHEN (Ext_Function_opcode = X"08") ELSE -- pass A JR
+					"1111" WHEN (Ext_Function_opcode = X"2A") ELSE -- slt
 					"ZZZZ";
 					
 	ALUop		<= 	ALUop_temp WHEN R_format = '1' ELSE
-					"0000" WHEN Opcode = X"0C" ELSE -- and
-					"0001" WHEN Opcode = X"0D" ELSE -- or
-					"0010" WHEN Opcode = X"0E" ELSE -- xor
-					"0011" WHEN Opcode = X"08" OR Opcode = X"23" OR Opcode = X"2B" ELSE -- add
-					"1001" WHEN Opcode = X"0F" ELSE --shift left 16 times
-					"1010" WHEN Opcode = X"03" OR Opcode = X"02" ELSE -- PC+4
-					"1111" WHEN Opcode = X"0A" OR Opcode = X"04" OR Opcode = X"05" ELSE -- slt
+					"0000" WHEN Ext_Opcode = X"0C" ELSE -- and
+					"0001" WHEN Ext_Opcode = X"0D" ELSE -- or
+					"0010" WHEN Ext_Opcode = X"0E" ELSE -- xor
+					"0011" WHEN Ext_Opcode = X"08" OR Ext_Opcode = X"23" OR Ext_Opcode = X"2B" ELSE -- add
+					"1001" WHEN Ext_Opcode = X"0F" ELSE --shift left 16 times
+					"1010" WHEN Ext_Opcode = X"03" ELSE -- PC+4
+					"1111" WHEN Ext_Opcode = X"0A" OR Ext_Opcode = X"04" OR Ext_Opcode = X"05" ELSE -- slt
 					"ZZZZ";
 
    END behavior;
