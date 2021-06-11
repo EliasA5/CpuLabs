@@ -15,13 +15,13 @@
 	
 .text
 main:	
+	nop
 	la $a0, ID
 	lw $a1, IDSize
 	la $a2, IDSorted
 	jal sort
 	
-	li $v0, 10
-	syscall
+	j bigend
 
 sort:
 	addi $sp, $sp, -24
@@ -87,6 +87,8 @@ finishSort:
 	lw $t0, 20($sp)
 	addi $sp, $sp, 24
 	jr $ra
+
+bigend: 
 	
 	
 	
