@@ -11,7 +11,14 @@ ENTITY MIPS IS
 		ALU_result_out, read_data_1_out, read_data_2_out, write_data_out,	
      	Instruction_out					: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 		Branch_out, Zero_out, Memwrite_out, 
-		Regwrite_out					: OUT 	STD_LOGIC );
+		Regwrite_out					: OUT 	STD_LOGIC ;
+		CS1_OUT_SIG         			: OUT    STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+		CS2_OUT_SIG         			: OUT    STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+		CS3_OUT_SIG         			: OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+		CS4_OUT_SIG         			: OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+		CS5_OUT_SIG         			: OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+		CS6_OUT_SIG         			: OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+		CS7_IN_SIG          			: IN     STD_LOGIC_VECTOR( 7 DOWNTO 0 ));
 END 	MIPS;
 
 ARCHITECTURE structure OF MIPS IS
@@ -76,9 +83,25 @@ ARCHITECTURE structure OF MIPS IS
 	COMPONENT dmemory
 	     PORT(	read_data 			: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
         		address 			: IN 	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+				IO_READ_DATA 		: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0);
         		write_data 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
         		MemRead, Memwrite 	: IN 	STD_LOGIC;
         		Clock,reset			: IN 	STD_LOGIC );
+	END COMPONENT;
+
+	COMPONENT DMB IS
+		PORT(	IO_READ_DATA 		: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+				address 			: IN 	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+				write_data 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+				MemRead, Memwrite 	: IN 	STD_LOGIC;
+				CS1_OUT_SIG         : OUT    STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+				CS2_OUT_SIG         : OUT    STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+				CS3_OUT_SIG         : OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+				CS4_OUT_SIG         : OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+				CS5_OUT_SIG         : OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+				CS6_OUT_SIG         : OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+				CS7_IN_SIG          : IN     STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+				clock,reset			: IN 	STD_LOGIC );
 	END COMPONENT;
 
 					-- declare signals used to connect VHDL components
@@ -91,6 +114,7 @@ ARCHITECTURE structure OF MIPS IS
 	SIGNAL Jump_Result		: STD_LOGIC_VECTOR( 7 DOWNTO 0 );
 	SIGNAL ALU_result 		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 	SIGNAL read_data 		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+	SIGNAL IO_READ_DATA		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 	SIGNAL ALUSrc 			: STD_LOGIC;
 	SIGNAL Branch 			: STD_LOGIC_VECTOR( 1 DOWNTO 0);
 	SIGNAL Jump				: STD_LOGIC;
@@ -177,10 +201,28 @@ BEGIN
    MEM:  dmemory
 	PORT MAP (	read_data 		=> read_data,
 				address 		=> ALU_Result (9 DOWNTO 2),--jump memory address by 4
+				IO_READ_DATA	=> IO_READ_DATA,
 				write_data 		=> read_data_2,
 				MemRead 		=> MemRead, 
 				Memwrite 		=> MemWrite, 
                 clock 			=> clock,  
 				reset 			=> reset );
+
+	IO_DMB: DMB
+	port map(	IO_READ_DATA 	=> IO_READ_DATA,
+				address 		=> ALU_Result (9 DOWNTO 2),
+				write_data 		=> read_data_2,
+				MemRead 		=> MemRead, 
+				Memwrite 		=> MemWrite,
+				CS1_OUT_SIG     => CS1_OUT_SIG,
+				CS2_OUT_SIG     => CS2_OUT_SIG,
+				CS3_OUT_SIG     => CS3_OUT_SIG,
+				CS4_OUT_SIG     => CS4_OUT_SIG,  
+				CS5_OUT_SIG     => CS5_OUT_SIG, 
+				CS6_OUT_SIG     => CS6_OUT_SIG,
+				CS7_IN_SIG      => CS7_IN_SIG,
+                clock 			=> clock,  
+				reset 			=> reset );
+
 END structure;
 
