@@ -83,7 +83,7 @@ ARCHITECTURE structure OF MIPS IS
 
 	COMPONENT dmemory
 	     PORT(	read_data 			: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-        		address 			: IN 	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+        		address 			: IN 	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
 				IO_READ_DATA 		: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0);
         		write_data 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
         		MemRead, Memwrite 	: IN 	STD_LOGIC;
@@ -92,7 +92,7 @@ ARCHITECTURE structure OF MIPS IS
 
 	COMPONENT DMB IS
 		PORT(	IO_READ_DATA 		: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-				address 			: IN 	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+				address 			: IN 	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
 				write_data 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 				MemRead, Memwrite 	: IN 	STD_LOGIC;
 				CS1_OUT_SIG         : OUT    STD_LOGIC_VECTOR( 7 DOWNTO 0 );
@@ -201,7 +201,7 @@ BEGIN
 
    MEM:  dmemory
 	PORT MAP (	read_data 		=> read_data,
-				address 		=> ALU_Result (9 DOWNTO 2),--jump memory address by 4
+				address 		=> ALU_Result (9 DOWNTO 2) & "00",--jump memory address by 4
 				IO_READ_DATA	=> IO_READ_DATA,
 				write_data 		=> read_data_2,
 				MemRead 		=> MemRead, 
@@ -211,7 +211,7 @@ BEGIN
 
 	IO_DMB: DMB
 	port map(	IO_READ_DATA 	=> IO_READ_DATA,
-				address 		=> ALU_Result (9 DOWNTO 2),
+				address 		=> ALU_Result (9 DOWNTO 2) & "00",
 				write_data 		=> read_data_2,
 				MemRead 		=> MemRead, 
 				Memwrite 		=> MemWrite,

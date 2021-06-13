@@ -62,7 +62,7 @@ BEGIN
 				   Addr( 7 DOWNTO 0 );
 	mult_result <= Ainput * Binput;  
 
-	PROCESS ( ALUOp, Ainput, Binput, Shift_Result )
+	PROCESS ( ALUOp, Ainput, Binput, Shift_Result, PC_plus_4, mult_result )
 		BEGIN
 						-- Select ALU operation
 		CASE ALUOp IS

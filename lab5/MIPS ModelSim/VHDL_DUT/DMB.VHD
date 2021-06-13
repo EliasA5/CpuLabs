@@ -6,7 +6,7 @@ USE IEEE.STD_LOGIC_SIGNED.ALL;
 
 ENTITY DMB IS
 	PORT(	IO_READ_DATA 		: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-        	address 			: IN 	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+        	address 			: IN 	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
         	write_data 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 	   		MemRead, Memwrite 	: IN 	STD_LOGIC;
             CS1_OUT_SIG         : OUT    STD_LOGIC_VECTOR( 7 DOWNTO 0 );
@@ -63,60 +63,73 @@ begin
     
     PORT_LEDG: PROCESS(clock, reset, CS1, MemWrite)
     BEGIN
-        if(reset = '1') then
-            CS1_SIG <= (others => '0');
-        elsif(CS1 = '1' AND Memwrite = '1' AND clock'event AND clock = '1') then
-            CS1_SIG <= write_data( 7 DOWNTO 0);
+        if(clock'event AND clock = '1') then
+            if(reset = '1') then
+                CS1_SIG <= (others => '0');
+            elsif(CS1 = '1' AND Memwrite = '1' ) then
+                CS1_SIG <= write_data( 7 DOWNTO 0);
+            end if;
         end if;
     END PROCESS;
     CS1_OUT_SIG <= CS1_SIG;
 
     PORT_LEDR: PROCESS(clock, reset, CS2, MemWrite)
     BEGIN
-        if(reset = '1') then
-            CS2_SIG <= (others => '0');
-        elsif(CS2 = '1' AND Memwrite = '1' AND clock'event AND clock = '1') then
-            CS2_SIG <= write_data( 7 DOWNTO 0);
+
+        if(clock'event AND clock = '1') then
+            if(reset = '1') then
+                CS2_SIG <= (others => '0');
+            elsif(CS2 = '1' AND Memwrite = '1') then
+                CS2_SIG <= write_data( 7 DOWNTO 0);
+            end if;
         end if;
     END PROCESS;
     CS2_OUT_SIG <= CS2_SIG;
 
     PORT_HEX0: PROCESS(clock, reset, CS3, MemWrite)
     BEGIN
-        if(reset = '1') then
-            CS3_SIG <= (others => '0');
-        elsif(CS3 = '1' AND Memwrite = '1' AND clock'event AND clock = '1') then
-            CS3_SIG <= write_data( 7 DOWNTO 0);
+        if(clock'event AND clock = '1') then
+            if(reset = '1') then
+                CS3_SIG <= (others => '0');
+            elsif(CS3 = '1' AND Memwrite = '1') then
+                CS3_SIG <= write_data( 7 DOWNTO 0);
+            end if;
         end if;
     END PROCESS;
     ToHex0: bin4ToHex port map(CS3_SIG(3 DOWNTO 0), CS3_OUT_SIG);
 
     PORT_HEX1: PROCESS(clock, reset, CS4, MemWrite)
     BEGIN
-        if(reset = '1') then
-            CS4_SIG <= (others => '0');
-        elsif(CS4 = '1' AND Memwrite = '1' AND clock'event AND clock = '1') then
-            CS4_SIG <= write_data( 7 DOWNTO 0);
+        if(clock'event AND clock = '1') then
+            if(reset = '1') then
+                CS4_SIG <= (others => '0');
+            elsif(CS4 = '1' AND Memwrite = '1') then
+                CS4_SIG <= write_data( 7 DOWNTO 0);
+            end if;
         end if;
     END PROCESS;
     ToHex1: bin4ToHex port map(CS4_SIG(3 DOWNTO 0), CS4_OUT_SIG);
 
     PORT_HEX2: PROCESS(clock, reset, CS5, MemWrite)
     BEGIN
-        if(reset = '1') then
-            CS5_SIG <= (others => '0');
-        elsif(CS5 = '1' AND Memwrite = '1' AND clock'event AND clock = '1') then
-            CS5_SIG <= write_data( 7 DOWNTO 0);
+        if(clock'event AND clock = '1') then
+            if(reset = '1') then
+                CS5_SIG <= (others => '0');
+            elsif(CS5 = '1' AND Memwrite = '1') then
+                CS5_SIG <= write_data( 7 DOWNTO 0);
+            end if;
         end if;
     END PROCESS;
     ToHex2: bin4ToHex port map(CS5_SIG(3 DOWNTO 0), CS5_OUT_SIG);
 
     PORT_HEX3: PROCESS(clock, reset, CS6, MemWrite)
     BEGIN
-        if(reset = '1') then
-            CS6_SIG <= (others => '0');
-        elsif(CS6 = '1' AND Memwrite = '1' AND clock'event AND clock = '1') then
-            CS6_SIG <= write_data( 7 DOWNTO 0);
+        if(clock'event AND clock = '1') then
+            if(reset = '1') then
+                CS6_SIG <= (others => '0');
+            elsif(CS6 = '1' AND Memwrite = '1') then
+                CS6_SIG <= write_data( 7 DOWNTO 0);
+            end if;
         end if;
     END PROCESS;
     ToHex3: bin4ToHex port map(CS6_SIG(3 DOWNTO 0), CS6_OUT_SIG);
