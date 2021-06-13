@@ -40,6 +40,7 @@ BEGIN
    	Instruction_immediate_value <= Instruction( 15 DOWNTO 0 );
 	Addr 						<= Instruction( 25 DOWNTO 0 );
 	ra_register					<= (others => '1');
+
 					-- Read Register 1 Operation
 	read_data_1 <= register_array( 
 			      CONV_INTEGER( read_register_1_address ) );
