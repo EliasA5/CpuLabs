@@ -59,7 +59,7 @@ inst_memory: altsyncram
 		BEGIN
 			WAIT UNTIL ( clock'EVENT ) AND ( clock = '1' );
 			IF reset = '1' THEN
-				   PC( 9 DOWNTO 2) <= "00000000" ; 
+				   PC( 9 DOWNTO 2 ) <= "11111111" ; 
 			ELSE 
 				   PC( 9 DOWNTO 2 ) <= next_PC;
 			END IF;

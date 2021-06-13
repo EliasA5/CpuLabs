@@ -85,6 +85,7 @@ ARCHITECTURE structure OF MIPS IS
 	     PORT(	read_data 			: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
         		address 			: IN 	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
 				IO_READ_DATA 		: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0);
+				IO					: IN 	STD_LOGIC;
         		write_data 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
         		MemRead, Memwrite 	: IN 	STD_LOGIC;
         		Clock,reset			: IN 	STD_LOGIC );
@@ -92,9 +93,10 @@ ARCHITECTURE structure OF MIPS IS
 
 	COMPONENT DMB IS
 		PORT(	IO_READ_DATA 		: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-				address 			: IN 	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
+				address 			: IN 	STD_LOGIC_VECTOR( 11 DOWNTO 0 );
 				write_data 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 				MemRead, Memwrite 	: IN 	STD_LOGIC;
+				IO                  : OUT   STD_LOGIC;
 				CS1_OUT_SIG         : OUT    STD_LOGIC_VECTOR( 7 DOWNTO 0 );
 				CS2_OUT_SIG         : OUT    STD_LOGIC_VECTOR( 7 DOWNTO 0 );
 				CS3_OUT_SIG         : OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
@@ -127,6 +129,8 @@ ARCHITECTURE structure OF MIPS IS
 	SIGNAL MemRead 			: STD_LOGIC;
 	SIGNAL ALUop 			: STD_LOGIC_VECTOR(  3 DOWNTO 0 );
 	SIGNAL Instruction		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+	SIGNAL Address			: STD_LOGIC_VECTOR( 11 DOWNTO 0 );
+	SIGNAL IO				: STD_LOGIC;
 
 BEGIN
 					-- copy important signals to output pins for easy 
@@ -139,7 +143,8 @@ BEGIN
    Branch_out 		<= Branch(1) OR Branch(0);
    Zero_out 		<= Zero;
    RegWrite_out 	<= RegWrite;
-   MemWrite_out 	<= MemWrite;	
+   MemWrite_out 	<= MemWrite;
+   Address			<= ALU_Result (11 DOWNTO 2) & "00";
 					-- connect the 5 MIPS components   
   IFE : Ifetch
 	PORT MAP (	Instruction 	=> Instruction,
@@ -201,8 +206,9 @@ BEGIN
 
    MEM:  dmemory
 	PORT MAP (	read_data 		=> read_data,
-				address 		=> ALU_Result (9 DOWNTO 2) & "00",--jump memory address by 4
+				address 		=> Address(9 downto 0),--jump memory address by 4
 				IO_READ_DATA	=> IO_READ_DATA,
+				IO				=> IO,
 				write_data 		=> read_data_2,
 				MemRead 		=> MemRead, 
 				Memwrite 		=> MemWrite, 
@@ -211,10 +217,11 @@ BEGIN
 
 	IO_DMB: DMB
 	port map(	IO_READ_DATA 	=> IO_READ_DATA,
-				address 		=> ALU_Result (9 DOWNTO 2) & "00",
+				address 		=> Address,
 				write_data 		=> read_data_2,
 				MemRead 		=> MemRead, 
 				Memwrite 		=> MemWrite,
+				IO				=> IO,
 				CS1_OUT_SIG     => CS1_OUT_SIG,
 				CS2_OUT_SIG     => CS2_OUT_SIG,
 				CS3_OUT_SIG     => CS3_OUT_SIG,
