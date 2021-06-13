@@ -30,7 +30,7 @@ TYPE register_file IS ARRAY ( 0 TO 31 ) OF STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 	SIGNAL write_register_address_1		: STD_LOGIC_VECTOR( 4 DOWNTO 0 );
 	SIGNAL write_register_address_0		: STD_LOGIC_VECTOR( 4 DOWNTO 0 );
 	SIGNAL Instruction_immediate_value	: STD_LOGIC_VECTOR( 15 DOWNTO 0 );
-	SIGNAL ra_register					: STD_LOGIC_VECTOR( 4 DOWNTO 0 ) := (others => '1');
+	SIGNAL ra_register					: STD_LOGIC_VECTOR( 4 DOWNTO 0 );
 
 BEGIN
 	read_register_1_address 	<= Instruction( 25 DOWNTO 21 );
@@ -39,6 +39,7 @@ BEGIN
    	write_register_address_0 	<= Instruction( 20 DOWNTO 16 );
    	Instruction_immediate_value <= Instruction( 15 DOWNTO 0 );
 	Addr 						<= Instruction( 25 DOWNTO 0 );
+	ra_register					<= (others => '1');
 					-- Read Register 1 Operation
 	read_data_1 <= register_array( 
 			      CONV_INTEGER( read_register_1_address ) );
