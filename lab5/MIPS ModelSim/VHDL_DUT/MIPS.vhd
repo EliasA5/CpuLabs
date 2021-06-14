@@ -131,6 +131,7 @@ ARCHITECTURE structure OF MIPS IS
 	SIGNAL Instruction		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 	SIGNAL Address			: STD_LOGIC_VECTOR( 11 DOWNTO 0 );
 	SIGNAL IO				: STD_LOGIC;
+	SIGNAL reset_internal	: STD_LOGIC;
 
 BEGIN
 					-- copy important signals to output pins for easy 
@@ -145,6 +146,7 @@ BEGIN
    RegWrite_out 	<= RegWrite;
    MemWrite_out 	<= MemWrite;
    Address			<= ALU_Result (11 DOWNTO 2) & "00";
+   reset_internal	<= not reset;
 					-- connect the 5 MIPS components   
   IFE : Ifetch
 	PORT MAP (	Instruction 	=> Instruction,
@@ -156,7 +158,7 @@ BEGIN
 				Zero 			=> Zero,
 				PC_out 			=> PC,        		
 				clock 			=> clock,  
-				reset 			=> reset );
+				reset 			=> reset_internal );
 
    ID : Idecode
    	PORT MAP (	read_data_1 	=> read_data_1,
@@ -170,7 +172,7 @@ BEGIN
 				Sign_extend 	=> Sign_extend,
 				Addr			=> Addr,
         		clock 			=> clock,  
-				reset 			=> reset );
+				reset 			=> reset_internal );
 
 
    CTL:   control
@@ -186,7 +188,7 @@ BEGIN
 				Jump			=> Jump,
 				ALUop 			=> ALUop,
                 clock 			=> clock,
-				reset 			=> reset );
+				reset 			=> reset_internal );
 
    EXE:  Execute
    	PORT MAP (	Read_data_1 	=> read_data_1,
@@ -202,7 +204,7 @@ BEGIN
 				Jump_Result		=> Jump_Result,
 				PC_plus_4		=> PC_plus_4,
                 Clock			=> clock,
-				Reset			=> reset );
+				Reset			=> reset_internal );
 
    MEM:  dmemory
 	PORT MAP (	read_data 		=> read_data,
@@ -213,7 +215,7 @@ BEGIN
 				MemRead 		=> MemRead, 
 				Memwrite 		=> MemWrite, 
                 clock 			=> clock,  
-				reset 			=> reset );
+				reset 			=> reset_internal );
 
 	IO_DMB: DMB
 	port map(	IO_READ_DATA 	=> IO_READ_DATA,
@@ -230,7 +232,7 @@ BEGIN
 				CS6_OUT_SIG     => CS6_OUT_SIG,
 				CS7_IN_SIG      => CS7_IN_SIG,
                 clock 			=> clock,  
-				reset 			=> reset );
+				reset 			=> reset_internal );
 
 END structure;
 

@@ -21,6 +21,7 @@ END dmemory;
 ARCHITECTURE behavior OF dmemory IS
 SIGNAL write_clock : STD_LOGIC;
 SIGNAL MEMORY_READ_DATA : STD_LOGIC_VECTOR( 31 DOWNTO 0);
+SIGNAL MemWrite_internal : STD_LOGIC;
 BEGIN
 	data_memory : altsyncram
 	GENERIC MAP  (
@@ -33,7 +34,7 @@ BEGIN
 		intended_device_family => "Cyclone"
 	)
 	PORT MAP (
-		wren_a => memwrite,
+		wren_a => MemWrite_internal,
 		clock0 => write_clock,
 		address_a => address,
 		data_a => write_data,
@@ -41,7 +42,7 @@ BEGIN
 
 
 	read_data <= IO_READ_DATA when IO = '1' ELSE MEMORY_READ_DATA;
-	
+	MemWrite_internal <=  '0' when IO = '1' else Memwrite;
 -- Load memory address register with write clock
 		write_clock <= NOT clock;
 END behavior;
