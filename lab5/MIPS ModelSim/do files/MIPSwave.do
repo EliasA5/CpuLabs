@@ -37,7 +37,6 @@ add wave -noupdate -divider Execute
 add wave -noupdate -radix hexadecimal /mips_tb/U_0/EXE/Read_data_1
 add wave -noupdate -radix hexadecimal /mips_tb/U_0/EXE/Read_data_2
 add wave -noupdate -radix hexadecimal /mips_tb/U_0/EXE/Sign_extend
-add wave -noupdate -radix hexadecimal /mips_tb/U_0/EXE/Function_opcode
 add wave -noupdate -radix hexadecimal /mips_tb/U_0/EXE/ALUOp
 add wave -noupdate -radix hexadecimal /mips_tb/U_0/EXE/ALUSrc
 add wave -noupdate -radix hexadecimal /mips_tb/U_0/EXE/Zero
@@ -50,7 +49,6 @@ add wave -noupdate -radix hexadecimal /mips_tb/U_0/EXE/Ainput
 add wave -noupdate -radix hexadecimal /mips_tb/U_0/EXE/Binput
 add wave -noupdate -radix hexadecimal /mips_tb/U_0/EXE/ALU_output_mux
 add wave -noupdate -radix hexadecimal /mips_tb/U_0/EXE/Branch_Add
-add wave -noupdate -radix hexadecimal /mips_tb/U_0/EXE/ALU_ctl
 add wave -noupdate -divider Mem
 add wave -noupdate -radix hexadecimal /mips_tb/U_0/MEM/read_data
 add wave -noupdate -radix hexadecimal /mips_tb/U_0/MEM/address
@@ -77,7 +75,8 @@ add wave -noupdate -radix hexadecimal /mips_tb/U_0/CTL/Lw
 add wave -noupdate -radix hexadecimal /mips_tb/U_0/CTL/Sw
 add wave -noupdate -radix hexadecimal /mips_tb/U_0/CTL/Beq
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {76622 ps} 0}
+WaveRestoreCursors {{Cursor 1} {483240 ps} 0}
+quietly wave cursor active 1
 configure wave -namecolwidth 189
 configure wave -valuecolwidth 62
 configure wave -justifyvalue left
@@ -90,6 +89,6 @@ configure wave -gridoffset 0
 configure wave -gridperiod 1
 configure wave -griddelta 40
 configure wave -timeline 0
-configure wave -timelineunits ps
+configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {1013108 ps}
+WaveRestoreZoom {0 ps} {1193970 ps}

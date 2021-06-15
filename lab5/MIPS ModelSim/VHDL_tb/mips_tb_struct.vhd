@@ -45,6 +45,13 @@ ARCHITECTURE struct OF MIPS_tb IS
    SIGNAL read_data_2_out : STD_LOGIC_VECTOR( 31 DOWNTO 0 );
    SIGNAL reset           : STD_LOGIC;
    SIGNAL write_data_out  : STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+   SIGNAL CS1_OUT_SIG     : STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+	SIGNAL CS2_OUT_SIG     : STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+	SIGNAL CS3_OUT_SIG     : STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+	SIGNAL CS4_OUT_SIG     : STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+	SIGNAL CS5_OUT_SIG     : STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+	SIGNAL CS6_OUT_SIG     : STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+	SIGNAL CS7_IN_SIG      : STD_LOGIC_VECTOR( 7 DOWNTO 0 );
 
 
    -- Component Declarations
@@ -61,7 +68,14 @@ ARCHITECTURE struct OF MIPS_tb IS
       Zero_out        : OUT    STD_LOGIC;
       read_data_1_out : OUT    STD_LOGIC_VECTOR ( 31 DOWNTO 0 );
       read_data_2_out : OUT    STD_LOGIC_VECTOR ( 31 DOWNTO 0 );
-      write_data_out  : OUT    STD_LOGIC_VECTOR ( 31 DOWNTO 0 )
+      write_data_out  : OUT    STD_LOGIC_VECTOR ( 31 DOWNTO 0 );
+      CS1_OUT_SIG     : OUT    STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+		CS2_OUT_SIG     : OUT    STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+		CS3_OUT_SIG     : OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+		CS4_OUT_SIG     : OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+		CS5_OUT_SIG     : OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+		CS6_OUT_SIG     : OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
+		CS7_IN_SIG      : IN     STD_LOGIC_VECTOR( 7 DOWNTO 0 )
    );
    END COMPONENT;
    COMPONENT MIPS_tester
@@ -104,7 +118,14 @@ BEGIN
          Branch_out      => Branch_out,
          Zero_out        => Zero_out,
          Memwrite_out    => Memwrite_out,
-         Regwrite_out    => Regwrite_out
+         Regwrite_out    => Regwrite_out,
+         CS1_OUT_SIG     => CS1_OUT_SIG,
+         CS2_OUT_SIG     => CS2_OUT_SIG,
+         CS3_OUT_SIG     => CS3_OUT_SIG,
+         CS4_OUT_SIG     => CS4_OUT_SIG,
+         CS5_OUT_SIG     => CS5_OUT_SIG,
+         CS6_OUT_SIG     => CS6_OUT_SIG,
+         CS7_IN_SIG      => (others => '1')
       );
    U_1 : MIPS_tester
       PORT MAP (
