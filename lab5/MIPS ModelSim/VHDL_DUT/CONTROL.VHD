@@ -55,7 +55,7 @@ BEGIN
 	ALUop_temp	<=	"0000" WHEN (Ext_Function_opcode = X"24") ELSE -- and
 					"0001" WHEN (Ext_Function_opcode = X"25") ELSE -- or
 					"0010" WHEN (Ext_Function_opcode = X"26") ELSE -- xor
-					"0011" WHEN (Ext_Function_opcode = X"20") ELSE -- add
+					"0011" WHEN (Ext_Function_opcode = X"20" OR Ext_Function_opcode = X"21") ELSE -- add
 					"0100" WHEN (Ext_Function_opcode = X"22") ELSE -- sub
 					"0101" WHEN (Ext_Function_opcode = X"18") ELSE -- multiply
 					"0110" WHEN (Ext_Function_opcode = X"00") ELSE -- shift left

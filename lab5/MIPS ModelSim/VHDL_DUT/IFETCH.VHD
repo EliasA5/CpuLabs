@@ -20,8 +20,8 @@ ENTITY Ifetch IS
 END Ifetch;
 
 ARCHITECTURE behavior OF Ifetch IS
-	SIGNAL PC, PC_plus_4 	 : STD_LOGIC_VECTOR( 9 DOWNTO 0 );
-	SIGNAL next_PC, Mem_Addr : STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+	SIGNAL PC, PC_plus_4, Mem_Addr : STD_LOGIC_VECTOR( 9 DOWNTO 0 );
+	SIGNAL next_PC				   : STD_LOGIC_VECTOR( 7 DOWNTO 0 );
 BEGIN
 						--ROM for Instruction Memory
 inst_memory: altsyncram
@@ -29,7 +29,7 @@ inst_memory: altsyncram
 	GENERIC MAP (
 		operation_mode => "ROM",
 		width_a => 32,
-		widthad_a => 8,
+		widthad_a => 10,
 		lpm_type => "altsyncram",
 		outdata_reg_a => "UNREGISTERED",
 		init_file => "program.hex",
@@ -45,7 +45,7 @@ inst_memory: altsyncram
 		PC_out 			<= PC;
 		PC_plus_4_out 	<= PC_plus_4;
 						-- send address to inst. memory address register
-		Mem_Addr <= Next_PC;
+		Mem_Addr <= Next_PC & "00";
 						-- Adder to increment PC by 4        
       	PC_plus_4( 9 DOWNTO 2 )  <= PC( 9 DOWNTO 2 ) + 1;
        	PC_plus_4( 1 DOWNTO 0 )  <= "00";
@@ -59,7 +59,7 @@ inst_memory: altsyncram
 		BEGIN
 			WAIT UNTIL ( clock'EVENT ) AND ( clock = '1' );
 			IF reset = '1' THEN
-				   PC( 9 DOWNTO 2) <= "00000000" ; 
+				   PC( 9 DOWNTO 2 ) <= "11111111" ; 
 			ELSE 
 				   PC( 9 DOWNTO 2 ) <= next_PC;
 			END IF;

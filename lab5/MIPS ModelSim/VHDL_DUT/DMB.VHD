@@ -6,9 +6,10 @@ USE IEEE.STD_LOGIC_SIGNED.ALL;
 
 ENTITY DMB IS
 	PORT(	IO_READ_DATA 		: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-        	address 			: IN 	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+        	address 			: IN 	STD_LOGIC_VECTOR( 11 DOWNTO 0 );
         	write_data 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 	   		MemRead, Memwrite 	: IN 	STD_LOGIC;
+            IO                  : OUT   STD_LOGIC;
             CS1_OUT_SIG         : OUT    STD_LOGIC_VECTOR( 7 DOWNTO 0 );
             CS2_OUT_SIG         : OUT    STD_LOGIC_VECTOR( 7 DOWNTO 0 );
             CS3_OUT_SIG         : OUT    STD_LOGIC_VECTOR( 6 DOWNTO 0 );
@@ -27,14 +28,14 @@ architecture behavior of DMB is
             );
     END COMPONENT;
 
-    
-    SIGNAL IO : STD_LOGIC;
+    Signal IO_internal: STD_LOGIC;
     SIGNAL CS1, CS2, CS3, CS4, CS5, CS6, CS7: STD_LOGIC;
     SIGNAL CS1_SIG, CS2_SIG, CS3_SIG, CS4_SIG, CS5_SIG, CS6_SIG: STD_LOGIC_VECTOR( 7 DOWNTO 0);
     SIGNAL to_write : STD_LOGIC_VECTOR( 7 DOWNTO 0);
 begin
-    IO <= '1' WHEN (CS1 = '1' OR CS2 = '1' OR CS3 = '1' OR CS4 = '1' OR CS5 = '1' OR CS6 = '1' OR CS7 = '1')
+    IO_internal <= '1' WHEN (CS1 = '1' OR CS2 = '1' OR CS3 = '1' OR CS4 = '1' OR CS5 = '1' OR CS6 = '1' OR CS7 = '1')
 		  ELSE '0';
+    IO <= IO_internal;
     CS1 <= '1' when address = X"800" else '0';
     CS2 <= '1' when address = X"804" else '0';
     CS3 <= '1' when address = X"808" else '0';
@@ -43,10 +44,12 @@ begin
     CS6 <= '1' when address = X"814" else '0';
     CS7 <= '1' when address = X"818" else '0';
         
-    output_sel: process(clock, reset, Memwrite)
+    output_sel: process(clock, reset, MemRead, to_write, IO_internal)
     begin 
         if (clock'event and clock = '1') then
-            if(Memwrite = '1' AND IO = '1') then
+            if(reset = '1') then
+                IO_READ_DATA <= X"00000000";
+            elsif(MemRead = '1' AND IO_internal = '1') then
                 IO_READ_DATA <= X"000000" & to_write;
             end if;
         end if;

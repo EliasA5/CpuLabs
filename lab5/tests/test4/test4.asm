@@ -11,7 +11,7 @@
 .data
 	ID: .word 4,3,8,2,7,2,9,3
 	IDSize: .word 8
-	N: .word 0XB71B00
+	N: .word 0xB71B00
 	IDSorted: .word 0:7
 	
 .text
