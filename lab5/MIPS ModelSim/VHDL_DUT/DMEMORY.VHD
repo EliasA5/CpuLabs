@@ -27,7 +27,7 @@ BEGIN
 	GENERIC MAP  (
 		operation_mode => "SINGLE_PORT",
 		width_a => 32,
-		widthad_a => 10,
+		widthad_a => 8,
 		lpm_type => "altsyncram",
 		outdata_reg_a => "UNREGISTERED",
 		init_file => "dmemory.hex",
@@ -36,7 +36,7 @@ BEGIN
 	PORT MAP (
 		wren_a => MemWrite_internal,
 		clock0 => write_clock,
-		address_a => address,
+		address_a => address(9 DOWNTO 2),
 		data_a => write_data,
 		q_a => MEMORY_READ_DATA	);
 
